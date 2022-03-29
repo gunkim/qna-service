@@ -1,51 +1,48 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+buildscript {
+    val version_kotlin by extra { "1.6.10" }
+    val version_springBoot by extra { "2.6.5" }
+
+    repositories {
+        mavenCentral()
+        maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://repo.spring.io/plugins-release")
+    }
+
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$version_springBoot")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:$version_kotlin")
+    }
+}
 
 plugins {
-	id("org.springframework.boot") version "2.6.4"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	id("org.asciidoctor.convert") version "1.5.8"
-	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.spring") version "1.6.10"
-	kotlin("plugin.jpa") version "1.6.10"
+    java
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    kotlin("jvm") version "1.6.10"
+}
+allprojects {
+    group = "io.github.gunkim"
+    version = "0.0.1"
+
+    repositories {
+        mavenCentral()
+    }
 }
 
-group = "code.by.meet"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
-
-repositories {
-	mavenCentral()
+subprojects {
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
+    }
 }
-
-extra["snippetsDir"] = file("build/generated-snippets")
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	runtimeOnly("com.h2database:h2")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    implementation(kotlin("stdlib"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "17"
-	}
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
-
-tasks.test {
-	outputs.dir(project.property("snippetsDir"))
-}
-
-tasks.asciidoctor {
-	inputs.dir(project.property("snippetsDir"))
-	dependsOn(tasks.test)
+tasks.getByName<Test>("test") {
+    useJUnitPlatform()
 }
