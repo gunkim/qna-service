@@ -1,11 +1,11 @@
-package code.by.meet.app
+package io.github.gunkim
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class QnaServiceApplication
+open class Application
 
 fun main(args: Array<String>) {
-	runApplication<QnaServiceApplication>(*args)
+    runApplication<Application>(*args)
 }
