@@ -1,7 +1,5 @@
 package io.github.gunkim.question.adapter.persistence
 
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -12,10 +10,17 @@ import javax.persistence.Id
 class CategoryJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private var id: Long? = null,
-    private val name: String,
-    @CreatedDate
-    private val createdDatetime: LocalDateTime,
-    @LastModifiedDate
-    private var updatedDatetime: LocalDateTime
-)
+    var id: Long? = null,
+    val name: String,
+    createdAt: LocalDateTime = LocalDateTime.now(),
+    updatedAt: LocalDateTime? = null
+) : BaseTimeEntity(createdAt, updatedAt) {
+    override fun equals(other: Any?): Boolean = this === other ||
+            other is CategoryJpaEntity &&
+            id == other.id &&
+            name == other.name &&
+            createdAt == other.createdAt &&
+            updatedAt == other.updatedAt
+
+    override fun hashCode(): Int = hashCodeOf(id, name, createdAt, updatedAt)
+}
