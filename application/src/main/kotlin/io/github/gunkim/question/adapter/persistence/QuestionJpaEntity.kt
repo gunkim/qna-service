@@ -3,13 +3,23 @@ package io.github.gunkim.question.adapter.persistence
 import java.time.LocalDateTime
 import javax.persistence.*
 
-@Entity(name = "answer")
-class AnswerJpaEntity(
+@Entity(name = "question")
+class QuestionJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    @ManyToOne(fetch = FetchType.LAZY)
-    val questionJpaEntity: QuestionJpaEntity,
+    @OneToOne(
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.PERSIST, CascadeType.REMOVE],
+        orphanRemoval = true
+    )
+    val categoryJpaEntity: CategoryJpaEntity,
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.PERSIST, CascadeType.REMOVE],
+        orphanRemoval = true
+    )
+    val tagJpaEntities: MutableSet<TagJpaEntity> = mutableSetOf(),
     var content: String,
     @Embedded
     val userEmbedded: UserEmbedded,
@@ -17,9 +27,10 @@ class AnswerJpaEntity(
     updatedAt: LocalDateTime? = null
 ) : BaseTimeEntity(createdAt, updatedAt) {
     override fun equals(other: Any?): Boolean = this === other ||
-            other is AnswerJpaEntity &&
+            other is QuestionJpaEntity &&
             id == other.id &&
-            questionJpaEntity == other.questionJpaEntity &&
+            categoryJpaEntity == other.categoryJpaEntity &&
+            tagJpaEntities == other.tagJpaEntities &&
             content == other.content &&
             userEmbedded == other.userEmbedded &&
             createdAt == other.createdAt &&
@@ -28,7 +39,8 @@ class AnswerJpaEntity(
     override fun hashCode(): Int =
         hashCodeOf(
             id,
-            questionJpaEntity,
+            categoryJpaEntity,
+            tagJpaEntities,
             content,
             userEmbedded,
             createdAt,
