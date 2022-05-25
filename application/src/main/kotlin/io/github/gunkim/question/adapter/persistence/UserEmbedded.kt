@@ -1,5 +1,6 @@
 package io.github.gunkim.question.adapter.persistence
 
+import io.github.gunkim.function.hashCodeOf
 import javax.persistence.Embeddable
 
 @Embeddable
