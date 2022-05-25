@@ -1,5 +1,6 @@
 package io.github.gunkim.question.adapter.persistence
 
+import io.github.gunkim.function.hashCodeOf
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
