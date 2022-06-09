@@ -1,4 +1,4 @@
-package io.github.gunkim.question.adapter.persistence
+package io.github.gunkim.question.adapter.out.persistence
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
