@@ -13,9 +13,6 @@ class Question private constructor(
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime? = null
 ) {
-    fun getTagNames(): List<String> = tags.asSequence().map(Tag::name).toList()
-    fun getCategoryName(): String = category.name
-
     companion object {
         operator fun invoke(
             id: Long? = null,
@@ -40,6 +37,9 @@ class Question private constructor(
             )
         }
     }
+
+    fun getTagNames(): List<String> = tags.asSequence().map(Tag::name).toList()
+    fun getCategoryName(): String = category.name
 
     override fun equals(other: Any?): Boolean = this === other ||
             other is Question &&
