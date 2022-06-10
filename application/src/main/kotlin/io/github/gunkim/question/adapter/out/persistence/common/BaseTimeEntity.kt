@@ -1,4 +1,4 @@
-package io.github.gunkim.question.adapter.out.persistence
+package io.github.gunkim.question.adapter.out.persistence.common
 
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate

@@ -1,5 +1,10 @@
 package io.github.gunkim.question.adapter.out.persistence
 
+import io.github.gunkim.question.adapter.out.persistence.category.CategoryJpaEntity
+import io.github.gunkim.question.adapter.out.persistence.question.QuestionJpaEntity
+import io.github.gunkim.question.adapter.out.persistence.question.QuestionJpaEntityRepository
+import io.github.gunkim.question.adapter.out.persistence.tag.TagJpaEntity
+import io.github.gunkim.question.adapter.out.persistence.user.UserEmbedded
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

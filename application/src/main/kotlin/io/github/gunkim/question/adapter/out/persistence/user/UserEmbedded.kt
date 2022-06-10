@@ -1,4 +1,4 @@
-package io.github.gunkim.question.adapter.out.persistence
+package io.github.gunkim.question.adapter.out.persistence.user
 
 import io.github.gunkim.function.hashCodeOf
 import javax.persistence.Embeddable
