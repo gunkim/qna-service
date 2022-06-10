@@ -1,4 +1,4 @@
-package io.github.gunkim.question.adapter.out.persistence
+package io.github.gunkim.question.adapter.out.persistence.question
 
 import io.github.gunkim.question.domain.Category
 import io.github.gunkim.question.domain.Question

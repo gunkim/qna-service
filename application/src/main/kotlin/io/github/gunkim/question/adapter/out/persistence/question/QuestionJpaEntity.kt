@@ -1,6 +1,10 @@
-package io.github.gunkim.question.adapter.out.persistence
+package io.github.gunkim.question.adapter.out.persistence.question
 
 import io.github.gunkim.function.hashCodeOf
+import io.github.gunkim.question.adapter.out.persistence.tag.TagJpaEntity
+import io.github.gunkim.question.adapter.out.persistence.user.UserEmbedded
+import io.github.gunkim.question.adapter.out.persistence.category.CategoryJpaEntity
+import io.github.gunkim.question.adapter.out.persistence.common.BaseTimeEntity
 import java.time.LocalDateTime
 import javax.persistence.*
 

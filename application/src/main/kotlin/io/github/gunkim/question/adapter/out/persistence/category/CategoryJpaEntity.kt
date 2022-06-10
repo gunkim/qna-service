@@ -1,23 +1,24 @@
-package io.github.gunkim.question.adapter.out.persistence
+package io.github.gunkim.question.adapter.out.persistence.category
 
 import io.github.gunkim.function.hashCodeOf
+import io.github.gunkim.question.adapter.out.persistence.common.BaseTimeEntity
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 
-@Entity(name = "tag")
-class TagJpaEntity(
+@Entity(name = "category")
+class CategoryJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    var name: String,
+    val name: String,
     createdAt: LocalDateTime = LocalDateTime.now(),
     updatedAt: LocalDateTime? = null
 ) : BaseTimeEntity(createdAt, updatedAt) {
     override fun equals(other: Any?): Boolean = this === other ||
-            other is TagJpaEntity &&
+            other is CategoryJpaEntity &&
             id == other.id &&
             name == other.name &&
             createdAt == other.createdAt &&
