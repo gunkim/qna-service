@@ -18,9 +18,8 @@ class ModifyQuestionService(
         tags: MutableSet<Tag>,
         content: String
     ) {
-        val question = loadQuestionPort.loadQuestion(questionId)
-            .change(category, tags, content)
-
-        modifyQuestionPort.modifyQuestion(question)
+        val loadedQuestion = loadQuestionPort.loadQuestion(questionId)
+        val modifiedQuestion = loadedQuestion.modify(category, tags, content)
+        modifyQuestionPort.modifyQuestion(modifiedQuestion)
     }
 }

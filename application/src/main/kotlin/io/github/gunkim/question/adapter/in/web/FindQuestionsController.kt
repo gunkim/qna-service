@@ -8,40 +8,31 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
-interface FindQuestionsController {
-    @GetMapping("/api/v1/questions")
-    fun findQuestions(): List<FindQuestionsResponse>
-}
-
 @RestController
-internal class FindQuestionsControllerImpl(
-    private val findQuestionsUseCase: FindQuestionsUseCase
-) : FindQuestionsController {
-    override fun findQuestions(): List<FindQuestionsResponse> {
-        return findQuestionsUseCase.findQuestions()
-            .asSequence()
-            .map(::convertResponse)
-            .toList()
+class FindQuestionsController(private val useCase: FindQuestionsUseCase) {
+    @GetMapping("/api/v1/questions")
+    fun findQuestions(): List<FindQuestionsResponse> {
+        return useCase.findQuestions().map(::convertResponse)
     }
 
     private fun convertResponse(question: Question): FindQuestionsResponse {
-        return question.let {
-            FindQuestionsResponse(
-                id = it.id!!,
-                categoryName = it.getCategoryName(),
-                tagNames = it.getTagNames(),
-                content = it.content,
-                createdDatetime = it.createdAt
-            )
-        }
+        return question.let(::FindQuestionsResponse)
     }
 }
 
-class FindQuestionsResponse(
+data class FindQuestionsResponse(
     val id: Long,
     val categoryName: String,
     val tagNames: List<String>,
     val content: String,
     @get:JsonFormat(pattern = COMMON_DATETIME_FORMAT)
     val createdDatetime: LocalDateTime
-)
+) {
+    constructor(question: Question) : this(
+        id = question.id!!,
+        categoryName = question.categoryName,
+        tagNames = question.tagNames,
+        content = question.content,
+        createdDatetime = question.createdAt
+    )
+}

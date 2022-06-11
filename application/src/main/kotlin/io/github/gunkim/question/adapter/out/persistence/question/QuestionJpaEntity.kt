@@ -1,10 +1,14 @@
 package io.github.gunkim.question.adapter.out.persistence.question
 
 import io.github.gunkim.function.hashCodeOf
-import io.github.gunkim.question.adapter.out.persistence.tag.TagJpaEntity
-import io.github.gunkim.question.adapter.out.persistence.user.UserEmbedded
 import io.github.gunkim.question.adapter.out.persistence.category.CategoryJpaEntity
 import io.github.gunkim.question.adapter.out.persistence.common.BaseTimeEntity
+import io.github.gunkim.question.adapter.out.persistence.tag.TagJpaEntity
+import io.github.gunkim.question.adapter.out.persistence.user.UserEmbedded
+import io.github.gunkim.question.domain.Category
+import io.github.gunkim.question.domain.Question
+import io.github.gunkim.question.domain.Tag
+import io.github.gunkim.question.domain.User
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -51,4 +55,37 @@ class QuestionJpaEntity(
             createdAt,
             updatedAt
         )
+
+    fun convertToDomain(): Question {
+        val categoryJpaEntity = categoryJpaEntity
+        val tagJpaEntities = tagJpaEntities
+        val userEmbedded = userEmbedded
+        return Question(
+            id = id,
+            content = content,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+            category = Category(
+                id = categoryJpaEntity.id,
+                name = categoryJpaEntity.name,
+                createdAt = categoryJpaEntity.createdAt,
+                updatedAt = categoryJpaEntity.updatedAt
+            ),
+            tags = tagJpaEntities.map {
+                Tag(
+                    id = it.id,
+                    name = it.name,
+                    createdAt = it.createdAt,
+                    updatedAt = it.updatedAt
+                )
+            }.toMutableSet(),
+            answers = mutableSetOf(),
+            user = User(
+                username = userEmbedded.username,
+                password = userEmbedded.password,
+                ip = userEmbedded.ip
+            )
+        )
+    }
 }
+

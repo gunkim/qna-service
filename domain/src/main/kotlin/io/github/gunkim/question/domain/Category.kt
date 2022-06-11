@@ -16,9 +16,13 @@ class Category private constructor(
             createdAt: LocalDateTime = LocalDateTime.now(),
             updatedAt: LocalDateTime? = null
         ): Category {
+            require(name.length in 2..20) {
+                "카테고리명은 2글자 이상 20 글자 이하여야 합니다."
+            }
+
             return Category(
                 id = id,
-                name = name.takeIf { it.length in 2..20 } ?: throw IllegalArgumentException("카테고리명은 2글자 이상 20 글자 이하여야 합니다."),
+                name = name,
                 createdAt = createdAt,
                 updatedAt = updatedAt
             )
