@@ -1,6 +1,9 @@
 package io.github.gunkim.question.domain
 
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -39,7 +42,46 @@ class QuestionTests {
         }
     }
 
+    @Test
+    fun `질문 수정 테스트`() {
+        val content = "수정된 질문이에요~"
+        val category = Category(name = "안녕")
+        val tags = mutableSetOf(Tag(name = "코틀린"))
+        val question = createQuestion()
+
+        val modifyQuestion = question.change(
+            content = content,
+            category = category,
+            tags = tags
+        )
+        assertAll(
+            { assertThat(modifyQuestion.id).isEqualTo(question.id) },
+            { assertThat(modifyQuestion.content).isEqualTo(content) },
+            { assertThat(modifyQuestion.category).isEqualTo(category) },
+            { assertThat(modifyQuestion.tags).isEqualTo(tags) },
+            { assertThat(modifyQuestion.answers).isEqualTo(question.answers) },
+            { assertThat(modifyQuestion.user).isEqualTo(question.user) },
+            { assertThat(modifyQuestion.createdAt).isEqualTo(question.createdAt) },
+            { assertThat(modifyQuestion.updatedAt).isEqualTo(question.updatedAt) },
+        )
+    }
+
     companion object {
+        fun createQuestion(): Question {
+            return createQuestion("질문이에요~")
+        }
+
+        fun createQuestion(content: String): Question {
+            return Question(
+                id = 1L,
+                category = Category(name = "테스트"),
+                tags = mutableSetOf(Tag(name = "헬로로")),
+                answers = mutableSetOf(),
+                content = content,
+                user = User("김건", "12341234", "127.0.0.1")
+            )
+        }
+
         @JvmStatic
         fun notValidArguments(): Stream<Arguments> {
             return Stream.of(
