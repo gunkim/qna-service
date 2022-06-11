@@ -24,13 +24,16 @@ class Question private constructor(
             createdAt: LocalDateTime = LocalDateTime.now(),
             updatedAt: LocalDateTime? = null
         ): Question {
+            require(content.length in 2..1500) {
+                "질문 내용은 2자 이상 1500자 미만이어야 합니다."
+            }
+
             return Question(
                 id = id,
                 category = category,
                 tags = tags,
                 answers = answers,
-                content = content.takeIf { it.length in 2..1500 }
-                    ?: throw IllegalArgumentException("질문 내용은 2자 이상 1500자 미만이어야 합니다."),
+                content = content,
                 user = user,
                 createdAt = createdAt,
                 updatedAt = updatedAt
@@ -38,7 +41,7 @@ class Question private constructor(
         }
     }
 
-    fun change(category: Category, tags: MutableSet<Tag>, content: String): Question {
+    fun modify(category: Category, tags: MutableSet<Tag>, content: String): Question {
         return Question(
             id = id,
             category = category,
@@ -51,8 +54,8 @@ class Question private constructor(
         )
     }
 
-    fun getTagNames(): List<String> = tags.asSequence().map(Tag::name).toList()
-    fun getCategoryName(): String = category.name
+    val tagNames: List<String> = tags.map(Tag::name)
+    val categoryName = category.name
 
     override fun equals(other: Any?): Boolean = this === other ||
             other is Question &&

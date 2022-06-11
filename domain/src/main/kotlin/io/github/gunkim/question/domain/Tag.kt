@@ -16,10 +16,13 @@ class Tag private constructor(
             createdAt: LocalDateTime = LocalDateTime.now(),
             updatedAt: LocalDateTime? = null
         ): Tag {
+            require(name.length in 3..20) {
+                "태그명은 3글자 이상 20글자 미만이어야 합니다."
+            }
+
             return Tag(
                 id = id,
-                name = name.takeIf { it.length in 3..20 }
-                    ?: throw IllegalArgumentException("태그명은 3글자 이상 20글자 미만이어야 합니다."),
+                name = name,
                 createdAt = createdAt,
                 updatedAt = updatedAt
             )

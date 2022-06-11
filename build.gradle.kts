@@ -20,6 +20,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.10"
 }
+
 allprojects {
     group = "io.github.gunkim"
     version = "0.0.1"

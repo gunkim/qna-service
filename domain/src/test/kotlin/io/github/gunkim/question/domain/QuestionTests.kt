@@ -49,11 +49,8 @@ class QuestionTests {
         val tags = mutableSetOf(Tag(name = "코틀린"))
         val question = createQuestion()
 
-        val modifyQuestion = question.change(
-            content = content,
-            category = category,
-            tags = tags
-        )
+        val modifyQuestion = question.modify(category, tags, content)
+
         assertAll(
             { assertThat(modifyQuestion.id).isEqualTo(question.id) },
             { assertThat(modifyQuestion.content).isEqualTo(content) },
@@ -68,16 +65,12 @@ class QuestionTests {
 
     companion object {
         fun createQuestion(): Question {
-            return createQuestion("질문이에요~")
-        }
-
-        fun createQuestion(content: String): Question {
             return Question(
                 id = 1L,
                 category = Category(name = "테스트"),
                 tags = mutableSetOf(Tag(name = "헬로로")),
                 answers = mutableSetOf(),
-                content = content,
+                content = "질문이에요~",
                 user = User("김건", "12341234", "127.0.0.1")
             )
         }

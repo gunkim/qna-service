@@ -22,7 +22,7 @@ class FindQuestionsControllerTests : RestDocsSpecification() {
         val usecase = FindQuestionsUseCase {
             listOf(fakeQuestion)
         }
-        mockMvc(FindQuestionsControllerImpl(usecase))
+        mockMvc(FindQuestionsController(usecase))
             .perform(get("/api/v1/questions"))
             .andExpect(status().isOk)
             .andDo(print())

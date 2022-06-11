@@ -7,9 +7,9 @@ import java.time.LocalDateTime
 import javax.persistence.EntityListeners
 import javax.persistence.MappedSuperclass
 
-@EntityListeners(AuditingEntityListener::class)
 @MappedSuperclass
-open class BaseTimeEntity(
+@EntityListeners(AuditingEntityListener::class)
+abstract class BaseTimeEntity(
     @CreatedDate
     var createdAt: LocalDateTime,
     @LastModifiedDate

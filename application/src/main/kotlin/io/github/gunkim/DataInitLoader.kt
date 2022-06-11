@@ -13,17 +13,16 @@ class DataInitLoader(
     private val questionJpaEntityRepository: QuestionJpaEntityRepository
 ) : CommandLineRunner {
     override fun run(vararg args: String?) {
-        val entities = (1..30).map(::createQuestion)
-        questionJpaEntityRepository.saveAll(entities)
+        (1..30).map(::createQuestion).let { questionJpaEntityRepository.saveAll(it) }
     }
 
     private fun createQuestion(id: Int): QuestionJpaEntity = QuestionJpaEntity(
-        content = "궁금한게 있어요!! $id",
+        content = "궁금한게 있어요!! ${id}",
         categoryJpaEntity = CategoryJpaEntity(name = "Java"),
         tagJpaEntities = mutableSetOf(TagJpaEntity(name = "궁금한거")),
         userEmbedded = UserEmbedded(
-            username = "gunkim$id",
-            password = "testtest$id",
+            username = "gunkim${id}",
+            password = "testtest${id}",
             ip = "127.0.0.1"
         )
     )

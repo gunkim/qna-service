@@ -5,6 +5,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
@@ -37,16 +38,16 @@ class AnswerTests {
         @JvmStatic
         fun notValidArguments(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of("1"),
-                Arguments.of("1".repeat(1501))
+                arguments("1"),
+                arguments("1".repeat(1_501))
             )
         }
 
         @JvmStatic
         fun validArguments(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of("자바"),
-                Arguments.of("1".repeat(1500))
+                arguments("자바"),
+                arguments("1".repeat(1_500))
             )
         }
     }
