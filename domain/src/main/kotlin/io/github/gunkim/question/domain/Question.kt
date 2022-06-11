@@ -38,6 +38,19 @@ class Question private constructor(
         }
     }
 
+    fun change(category: Category, tags: MutableSet<Tag>, content: String): Question {
+        return Question(
+            id = id,
+            category = category,
+            tags = tags,
+            content = content,
+            answers = answers,
+            user = user,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+    }
+
     fun getTagNames(): List<String> = tags.asSequence().map(Tag::name).toList()
     fun getCategoryName(): String = category.name
 
