@@ -2,14 +2,14 @@ package io.github.gunkim.question.adapter.`in`.web
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import io.github.gunkim.common.COMMON_DATETIME_FORMAT
-import io.github.gunkim.question.application.port.`in`.FindQuestionsUseCase
+import io.github.gunkim.question.application.port.`in`.FindQuestionUseCase
 import io.github.gunkim.question.domain.Question
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
-class FindQuestionsController(private val useCase: FindQuestionsUseCase) {
+class FindQuestionsController(private val useCase: FindQuestionUseCase) {
     @GetMapping("/api/v1/questions")
     fun findQuestions(): List<FindQuestionsResponse> {
         return useCase.findQuestions().map(::convertResponse)
