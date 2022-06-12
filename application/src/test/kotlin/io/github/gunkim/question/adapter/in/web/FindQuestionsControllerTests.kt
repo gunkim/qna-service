@@ -2,7 +2,7 @@ package io.github.gunkim.question.adapter.`in`.web
 
 import io.github.gunkim.common.RestDocsSpecification
 import io.github.gunkim.question.adapter.`in`.web.docs.FindQuestionsDocumentation
-import io.github.gunkim.question.application.port.`in`.FindQuestionsUseCase
+import io.github.gunkim.question.application.port.`in`.FindQuestionUseCase
 import io.github.gunkim.question.domain.Category
 import io.github.gunkim.question.domain.Question
 import io.github.gunkim.question.domain.Tag
@@ -19,9 +19,7 @@ class FindQuestionsControllerTests : RestDocsSpecification() {
 
     @Test
     fun `질문 목록 조회`() {
-        val usecase = FindQuestionsUseCase {
-            listOf(fakeQuestion)
-        }
+        val usecase = FakeFindQuestionUseCase()
         mockMvc(FindQuestionsController(usecase))
             .perform(get("/api/v1/questions"))
             .andExpect(status().isOk)
@@ -39,5 +37,13 @@ class FindQuestionsControllerTests : RestDocsSpecification() {
             answers = mutableSetOf(),
             createdAt = LocalDate.of(2022, 3, 31).atTime(15, 37)
         )
+
+        class FakeFindQuestionUseCase : FindQuestionUseCase {
+            override fun findQuestions(): List<Question> = listOf(fakeQuestion)
+
+            override fun findQuestion(questionId: Long): Question {
+                TODO("Not yet implemented")
+            }
+        }
     }
 }
