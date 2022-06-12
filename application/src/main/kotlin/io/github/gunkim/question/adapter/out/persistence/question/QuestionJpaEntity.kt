@@ -19,16 +19,16 @@ class QuestionJpaEntity(
     var id: Long? = null,
     @OneToOne(
         fetch = FetchType.EAGER,
-        cascade = [CascadeType.PERSIST, CascadeType.REMOVE],
+        cascade = [CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE],
         orphanRemoval = true
     )
-    val categoryJpaEntity: CategoryJpaEntity,
+    var categoryJpaEntity: CategoryJpaEntity,
     @OneToMany(
         fetch = FetchType.LAZY,
         cascade = [CascadeType.PERSIST, CascadeType.REMOVE],
         orphanRemoval = true
     )
-    val tagJpaEntities: MutableSet<TagJpaEntity> = mutableSetOf(),
+    var tagJpaEntities: MutableSet<TagJpaEntity> = mutableSetOf(),
     var content: String,
     @Embedded
     val userEmbedded: UserEmbedded,
@@ -36,14 +36,14 @@ class QuestionJpaEntity(
     updatedAt: LocalDateTime? = null
 ) : BaseTimeEntity(createdAt, updatedAt) {
     override fun equals(other: Any?): Boolean = this === other ||
-            other is QuestionJpaEntity &&
-            id == other.id &&
-            categoryJpaEntity == other.categoryJpaEntity &&
-            tagJpaEntities == other.tagJpaEntities &&
-            content == other.content &&
-            userEmbedded == other.userEmbedded &&
-            createdAt == other.createdAt &&
-            updatedAt == other.updatedAt
+        other is QuestionJpaEntity &&
+        id == other.id &&
+        categoryJpaEntity == other.categoryJpaEntity &&
+        tagJpaEntities == other.tagJpaEntities &&
+        content == other.content &&
+        userEmbedded == other.userEmbedded &&
+        createdAt == other.createdAt &&
+        updatedAt == other.updatedAt
 
     override fun hashCode(): Int =
         hashCodeOf(
@@ -86,6 +86,21 @@ class QuestionJpaEntity(
                 ip = userEmbedded.ip
             )
         )
+    }
+
+    fun update(
+        categoryJpaEntity: CategoryJpaEntity,
+        tagJpaEntities: MutableSet<TagJpaEntity>,
+        content: String
+    ) {
+        this.categoryJpaEntity = categoryJpaEntity
+        this.clearAndAdd(tagJpaEntities)
+        this.content = content
+    }
+
+    private fun clearAndAdd(tagJpaEntities: MutableSet<TagJpaEntity>) {
+        this.tagJpaEntities.clear()
+        this.tagJpaEntities.addAll(tagJpaEntities)
     }
 }
 
