@@ -1,6 +1,7 @@
 package io.github.gunkim.question.adapter.out.persistence.question
 
 import io.github.gunkim.function.hashCodeOf
+import io.github.gunkim.question.adapter.out.persistence.answer.AnswerJpaEntity
 import io.github.gunkim.question.adapter.out.persistence.category.CategoryJpaEntity
 import io.github.gunkim.question.adapter.out.persistence.common.BaseTimeEntity
 import io.github.gunkim.question.adapter.out.persistence.tag.TagJpaEntity
@@ -10,7 +11,15 @@ import io.github.gunkim.question.domain.Question
 import io.github.gunkim.question.domain.Tag
 import io.github.gunkim.question.domain.User
 import java.time.LocalDateTime
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Embedded
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity(name = "question")
 class QuestionJpaEntity(
@@ -24,11 +33,17 @@ class QuestionJpaEntity(
     )
     var categoryJpaEntity: CategoryJpaEntity,
     @OneToMany(
-        fetch = FetchType.LAZY,
+        fetch = FetchType.EAGER,
         cascade = [CascadeType.PERSIST, CascadeType.REMOVE],
         orphanRemoval = true
     )
-    var tagJpaEntities: MutableSet<TagJpaEntity> = mutableSetOf(),
+    val tagJpaEntities: MutableSet<TagJpaEntity> = mutableSetOf(),
+    @OneToMany(
+        fetch = FetchType.EAGER,
+        cascade = [CascadeType.PERSIST, CascadeType.REMOVE],
+        orphanRemoval = true
+    )
+    val answerEntities: MutableList<AnswerJpaEntity> = mutableListOf(),
     var content: String,
     @Embedded
     val userEmbedded: UserEmbedded,
@@ -79,7 +94,7 @@ class QuestionJpaEntity(
                     updatedAt = it.updatedAt
                 )
             }.toMutableSet(),
-            answers = mutableSetOf(),
+            answers = answerEntities.map(AnswerJpaEntity::convertToDomain).toMutableList(),
             user = User(
                 username = userEmbedded.username,
                 password = userEmbedded.password,
