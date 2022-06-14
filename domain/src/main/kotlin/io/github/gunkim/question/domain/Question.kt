@@ -54,19 +54,23 @@ class Question private constructor(
         )
     }
 
+    fun isNotEmptyAnswer(): Boolean {
+        return answers.isNotEmpty()
+    }
+
     val tagNames: List<String> = tags.map(Tag::name)
     val categoryName = category.name
 
     override fun equals(other: Any?): Boolean = this === other ||
-            other is Question &&
-            id == other.id &&
-            category == other.category &&
-            tags == other.tags &&
-            answers == other.answers &&
-            content == other.content &&
-            user == other.user &&
-            createdAt == other.createdAt &&
-            updatedAt == other.updatedAt
+        other is Question &&
+        id == other.id &&
+        category == other.category &&
+        tags == other.tags &&
+        answers == other.answers &&
+        content == other.content &&
+        user == other.user &&
+        createdAt == other.createdAt &&
+        updatedAt == other.updatedAt
 
     override fun hashCode(): Int = hashCodeOf(id, category, tags, answers, content, user, createdAt, updatedAt)
 }

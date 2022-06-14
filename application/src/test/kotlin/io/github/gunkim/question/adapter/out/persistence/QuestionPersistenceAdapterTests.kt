@@ -20,7 +20,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 open class QuestionPersistenceAdapterTests {
     @Autowired
-    private lateinit var repository: QuestionJpaEntityRepository
+    lateinit var repository: QuestionJpaEntityRepository
 
     lateinit var sut: QuestionPersistenceAdapter
 
@@ -57,5 +57,14 @@ open class QuestionPersistenceAdapterTests {
             { assertThat(questionEntity.tagJpaEntities.first().name).isEqualTo("개발 팁") },
             { assertThat(questionEntity.content).isEqualTo("새로운 내용") }
         )
+    }
+
+    @Test
+    fun `도메인 삭제`() {
+        val questionJpaEntity = repository.findAll()[0]
+        sut.deleteQuestion(questionJpaEntity.id!!)
+
+        val questionSize = repository.findAll().size
+        assertThat(questionSize).isEqualTo(0)
     }
 }

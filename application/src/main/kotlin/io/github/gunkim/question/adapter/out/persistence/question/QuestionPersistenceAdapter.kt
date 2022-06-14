@@ -2,6 +2,7 @@ package io.github.gunkim.question.adapter.out.persistence.question
 
 import io.github.gunkim.question.adapter.out.persistence.category.CategoryJpaEntity
 import io.github.gunkim.question.adapter.out.persistence.tag.TagJpaEntity
+import io.github.gunkim.question.application.port.out.DeleteQuestionPort
 import io.github.gunkim.question.application.port.out.LoadQuestionPort
 import io.github.gunkim.question.application.port.out.ModifyQuestionPort
 import io.github.gunkim.question.domain.Question
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component
 @Component
 class QuestionPersistenceAdapter(
     private val questionRepository: QuestionJpaEntityRepository
-) : LoadQuestionPort, ModifyQuestionPort {
+) : LoadQuestionPort, ModifyQuestionPort, DeleteQuestionPort {
     override fun loadQuestion(questionId: Long): Question {
         return questionRepository.findByIdOrNull(questionId)
             ?.let(QuestionJpaEntity::convertToDomain)
@@ -32,5 +33,11 @@ class QuestionPersistenceAdapter(
             tagJpaEntities = question.tags.map(::TagJpaEntity).toMutableSet(),
             content = question.content
         )
+    }
+
+    override fun deleteQuestion(questionId: Long) {
+        val questionJpaEntity = questionRepository.findByIdOrNull(questionId)
+            ?: error("해당 질문이 존재하지 않습니다. (question_id : ${questionId}")
+        questionRepository.delete(questionJpaEntity)
     }
 }
