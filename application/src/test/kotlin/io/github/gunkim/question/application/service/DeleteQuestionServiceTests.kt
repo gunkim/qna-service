@@ -35,7 +35,7 @@ class DeleteQuestionServiceTests {
                     id = 1L,
                     category = Category(name = "테스트"),
                     tags = mutableSetOf(Tag(name = "헬로로")),
-                    answers = mutableSetOf(),
+                    answers = mutableListOf(),
                     content = "질문이에요~",
                     user = User("김건", "12341234", "127.0.0.1")
                 )

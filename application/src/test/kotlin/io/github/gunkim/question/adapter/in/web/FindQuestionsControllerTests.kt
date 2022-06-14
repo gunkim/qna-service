@@ -34,7 +34,7 @@ class FindQuestionsControllerTests : RestDocsSpecification() {
             category = Category(name = "Java"),
             user = User(username = "gunkim", password = "testtest", ip = "127.0.0.1"),
             tags = mutableSetOf(Tag(name = "궁금한거")),
-            answers = mutableSetOf(),
+            answers = mutableListOf(),
             createdAt = LocalDate.of(2022, 3, 31).atTime(15, 37)
         )
 
