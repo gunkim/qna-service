@@ -13,15 +13,14 @@ class Question(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime? = null
 ) {
+    val tagNames: List<String> = tags.map(Tag::name)
+    val categoryName = category.name
+
     init {
         require(content.length in 2..1500) {
             "질문 내용은 2자 이상 1500자 이하여야 합니다."
         }
     }
-
-    val tagNames: List<String> = tags.map(Tag::name)
-
-    val categoryName = category.name
 
     fun modify(category: Category, tags: MutableSet<Tag>, content: String): Question {
         return Question(
