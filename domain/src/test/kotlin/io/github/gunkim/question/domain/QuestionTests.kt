@@ -21,7 +21,7 @@ class QuestionTests {
             Question(
                 category = Category(name = "테스트"),
                 tags = mutableSetOf(Tag(name = "헬로로")),
-                answers = mutableSetOf(),
+                answers = mutableListOf(),
                 content = content,
                 user = User("김건", "12341234", "127.0.0.1")
             )
@@ -35,7 +35,7 @@ class QuestionTests {
             Question(
                 category = Category(name = "테스트"),
                 tags = mutableSetOf(Tag(name = "헬로로")),
-                answers = mutableSetOf(),
+                answers = mutableListOf(),
                 content = content,
                 user = User("김건", "12341234", "127.0.0.1")
             )
@@ -69,7 +69,7 @@ class QuestionTests {
                 id = 1L,
                 category = Category(name = "테스트"),
                 tags = mutableSetOf(Tag(name = "헬로로")),
-                answers = mutableSetOf(),
+                answers = mutableListOf(),
                 content = "질문이에요~",
                 user = User("김건", "12341234", "127.0.0.1")
             )

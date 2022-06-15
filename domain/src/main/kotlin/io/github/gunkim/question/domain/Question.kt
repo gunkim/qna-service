@@ -3,41 +3,22 @@ package io.github.gunkim.question.domain
 import io.github.gunkim.function.hashCodeOf
 import java.time.LocalDateTime
 
-class Question private constructor(
+class Question(
     val id: Long? = null,
     val category: Category,
     val tags: MutableSet<Tag>,
     val answers: MutableList<Answer>,
     val content: String,
     val user: User,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime? = null
 ) {
-    companion object {
-        operator fun invoke(
-            id: Long? = null,
-            category: Category,
-            tags: MutableSet<Tag>,
-            answers: MutableList<Answer>,
-            content: String,
-            user: User,
-            createdAt: LocalDateTime = LocalDateTime.now(),
-            updatedAt: LocalDateTime? = null
-        ): Question {
-            require(content.length in 2..1500) {
-                "질문 내용은 2자 이상 1500자 미만이어야 합니다."
-            }
+    val tagNames: List<String> = tags.map(Tag::name)
+    val categoryName = category.name
 
-            return Question(
-                id = id,
-                category = category,
-                tags = tags,
-                answers = answers,
-                content = content,
-                user = user,
-                createdAt = createdAt,
-                updatedAt = updatedAt
-            )
+    init {
+        require(content.length in 2..1500) {
+            "질문 내용은 2자 이상 1500자 이하여야 합니다."
         }
     }
 
@@ -54,23 +35,20 @@ class Question private constructor(
         )
     }
 
-    fun isNotEmptyAnswer(): Boolean {
-        return answers.isNotEmpty()
+    fun isNotEmptyAnswer(): Boolean = answers.isNotEmpty()
+
+    override fun equals(other: Any?): Boolean {
+        return this === other ||
+            other is Question &&
+            id == other.id &&
+            category == other.category &&
+            tags == other.tags &&
+            answers == other.answers &&
+            content == other.content &&
+            user == other.user &&
+            createdAt == other.createdAt &&
+            updatedAt == other.updatedAt
     }
-
-    val tagNames: List<String> = tags.map(Tag::name)
-    val categoryName = category.name
-
-    override fun equals(other: Any?): Boolean = this === other ||
-        other is Question &&
-        id == other.id &&
-        category == other.category &&
-        tags == other.tags &&
-        answers == other.answers &&
-        content == other.content &&
-        user == other.user &&
-        createdAt == other.createdAt &&
-        updatedAt == other.updatedAt
 
     override fun hashCode(): Int = hashCodeOf(id, category, tags, answers, content, user, createdAt, updatedAt)
 }
