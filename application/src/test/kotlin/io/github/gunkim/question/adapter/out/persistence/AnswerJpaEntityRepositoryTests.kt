@@ -40,7 +40,6 @@ open class AnswerJpaEntityRepositoryTests {
             )
         )
         val answer = AnswerJpaEntity(
-            questionJpaEntity = question,
             content = "답변입니다.",
             userEmbedded = UserEmbedded(
                 username = "태양신",
